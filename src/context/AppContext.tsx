@@ -16,10 +16,10 @@ import {
 	skills,
 	courses,
 	projects,
-	tasks,
 	comments,
 	balanceInfo,
 	learningModules,
+	reports,
 } from "../data/mockData";
 import { allUsers } from "../data/mockData";
 
@@ -106,11 +106,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 	const [projectTasks, setProjectTasks] = useState<Record<string, Task[]>>(
 		() => {
 			const tasksByProject: Record<string, Task[]> = {};
-			tasks.forEach((task) => {
-				if (!tasksByProject[task.projectId]) {
-					tasksByProject[task.projectId] = [];
+			projects.forEach((project) => {
+				if (!tasksByProject[project.id]) {
+					tasksByProject[project.id] = [];
 				}
-				tasksByProject[task.projectId].push(task);
+				tasksByProject[project.id].push(...project.tasks);
 			});
 			return tasksByProject;
 		}
@@ -376,9 +376,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 
 	// Reports Methods
 	const getProjectReports = (projectId: string) => {
-		// Since we're using mock data, we'll return an empty array for now
-		// In a real app, this would be properly typed and implemented
-		return [] as DailyReport[];
+		return reports.filter((report) => report.projectId === projectId);
 	};
 
 	const addReport = (report: Omit<DailyReport, "id" | "createdAt">) => {

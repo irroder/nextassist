@@ -5,7 +5,6 @@ import ProjectCard from "./ProjectCard";
 interface ProjectListProps {
 	projects: Project[];
 	onSelectProject: (projectId: string) => void;
-	onAddProject: () => void;
 }
 
 const ProjectList: React.FC<ProjectListProps> = ({

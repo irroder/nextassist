@@ -1,57 +1,56 @@
 import React from "react";
-import { Calendar, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Project } from "../../../types";
-import { format, parseISO } from "date-fns";
+import { ChevronRight, Users } from "lucide-react";
 
 interface ProjectCardProps {
 	project: Project;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-	const formatDate = (dateString: string | null) => {
-		if (!dateString) return "Ongoing";
-		return format(parseISO(dateString), "MMM d, yyyy");
-	};
+	const completedTasks =
+		project.tasks?.filter((task) => task.status === "completed").length ||
+		0;
+	const totalTasks = project.tasks?.length || 0;
+	const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
 	return (
-		<div className="bg-white rounded-xl shadow-sm h-full hover:shadow-md transition-shadow">
-			<Link
-				to={`/assistant/projects/${project.id}`}
-				className="block p-6"
-			>
-				<div className="flex justify-between items-start">
-					<h3 className="text-lg font-semibold text-gray-800 mb-2">
-						{project.title}
-					</h3>
-					<span
-						className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-							project.status === "active"
-								? "bg-blue-50 text-blue-700"
-								: "bg-gray-50 text-gray-700"
-						}`}
-					>
-						{project.status}
-					</span>
+		<div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 cursor-pointer border border-gray-100 hover:border-secondary/20">
+			<Link to={`/assistant/projects/${project.id}`} className="block">
+				<div className="flex justify-between items-start mb-4">
+					<div className="flex-1 min-w-0">
+						<h3 className="font-semibold text-lg text-foreground truncate">
+							{project.assistantTitle}
+						</h3>
+						{project.assistantDescription && (
+							<p className="text-foreground/70 text-sm mt-1 line-clamp-2">
+								{project.assistantDescription}
+							</p>
+						)}
+					</div>
+					<ChevronRight
+						size={20}
+						className="text-foreground/30 flex-shrink-0 ml-2 group-hover:text-secondary transition-colors"
+					/>
 				</div>
 
-				<p className="text-gray-600 text-sm mb-4 line-clamp-2">
-					{project.description}
-				</p>
-
-				<div className="flex flex-col space-y-2 text-sm text-gray-500">
-					<div className="flex items-center">
-						<User size={14} className="mr-2" />
-						<span>Manager: {project.managerName}</span>
-					</div>
-					<div className="flex items-center">
-						<Calendar size={14} className="mr-2" />
+				<div className="flex items-center justify-between text-sm">
+					<div className="flex items-center text-foreground/50">
+						<Users size={16} className="mr-1.5" />
 						<span>
-							{formatDate(project.startDate)} -{" "}
-							{formatDate(project.endDate)}
+							{completedTasks} из {totalTasks} задач
 						</span>
 					</div>
 				</div>
+
+				{totalTasks > 0 && (
+					<div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+						<div
+							className="h-full bg-secondary rounded-full transition-all duration-300"
+							style={{ width: `${progress}%` }}
+						/>
+					</div>
+				)}
 			</Link>
 		</div>
 	);

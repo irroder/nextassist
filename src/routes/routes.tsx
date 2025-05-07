@@ -15,7 +15,7 @@ const ProjectsPage = React.lazy(
 	() => import("../pages/assistant/Projects.tsx")
 );
 const ProjectDetailPage = React.lazy(
-	() => import("../pages/assistant/ProjectDetail.tsx")
+	() => import("../pages/common/ProjectDetail.tsx")
 );
 const BalancePage = React.lazy(() => import("../pages/assistant/Balance.tsx"));
 
@@ -36,9 +36,7 @@ const ManagerBalancePage = React.lazy(
 const ManagerDashboardPage = React.lazy(
 	() => import("../pages/manager/DashboardPage")
 );
-const AssistantDetailPage = React.lazy(
-	() => import("../pages/manager/AssistantDetailPage")
-);
+
 const ManagerCoursesPage = React.lazy(() => import("../pages/manager/Courses"));
 
 const ManagerCourseLessonsPage = React.lazy(
@@ -46,10 +44,6 @@ const ManagerCourseLessonsPage = React.lazy(
 );
 const ManagerProfilePage = React.lazy(
 	() => import("../pages/manager/ProfilePage")
-);
-
-const ManagerSettingsPage = React.lazy(
-	() => import("../pages/manager/SettingsPage")
 );
 
 // Loading component for suspense fallback
@@ -143,7 +137,7 @@ export const AppRoutes = () => {
 					/>
 					<Route
 						path="dashboard/:id"
-						element={<AssistantDetailPage />}
+						element={<ProjectDetailPage />}
 					/>
 					<Route path="balance" element={<ManagerBalancePage />} />
 					<Route path="courses" element={<ManagerCoursesPage />} />
@@ -152,7 +146,6 @@ export const AppRoutes = () => {
 						element={<ManagerCourseLessonsPage />}
 					/>
 					<Route path="profile" element={<ManagerProfilePage />} />
-					<Route path="settings" element={<ManagerSettingsPage />} />
 				</Route>
 
 				<Route path="*" element={<NotFoundPage />} />

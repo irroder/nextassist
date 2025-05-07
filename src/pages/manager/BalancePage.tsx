@@ -78,39 +78,8 @@ const BalancePage: React.FC = () => {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-				<div className="lg:col-span-2">
-					<BalanceCard balance={balance} />
-				</div>
-				<div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:border-secondary/20 transition-colors">
-					<h2 className="text-lg font-semibold text-foreground mb-4">
-						Статистика расходов
-					</h2>
-					<div className="space-y-4">
-						<div className="flex items-center justify-between">
-							<span className="text-foreground/70">
-								За сегодня
-							</span>
-							<span className="font-medium text-foreground">
-								{formatCurrency(-5.5)}
-							</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<span className="text-foreground/70">
-								За неделю
-							</span>
-							<span className="font-medium text-foreground">
-								{formatCurrency(-80.47)}
-							</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<span className="text-foreground/70">За месяц</span>
-							<span className="font-medium text-foreground">
-								{formatCurrency(-180.47)}
-							</span>
-						</div>
-					</div>
-				</div>
+			<div className="mb-8">
+				<BalanceCard balance={balance} />
 			</div>
 
 			<div className="bg-white rounded-2xl shadow-sm p-6 mb-6 border border-gray-100 hover:border-primary/20 transition-colors">

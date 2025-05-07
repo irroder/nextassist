@@ -10,6 +10,7 @@ export interface User {
 	bio?: string;
 	inn?: string;
 	hasAcceptedOffer?: boolean;
+	completeCourses?: Course[];
 }
 
 export interface AuthContextType {
@@ -45,13 +46,13 @@ export interface Course {
 
 export interface Project {
 	id: string;
-	title: string;
-	description: string;
+	assistantTitle: string;
+	managerTitle: string;
+	assistantDescription: string;
+	managerDescription: string;
 	managerId: string;
+	assistantId: string;
 	managerName: string;
-	status: "active" | "completed";
-	startDate: string;
-	endDate: string | null;
 	tasks: Task[];
 	reports?: DailyReport[];
 }
@@ -73,11 +74,9 @@ export interface Task {
 	deadline: string | null;
 	status: "new" | "in_progress" | "completed" | "accepted" | "declined";
 	createdBy: string;
-	assignedTo: string;
 	createdAt: string;
 	completedAt: string | null;
 	comments: Comment[];
-	reports: Report[];
 }
 
 export interface Comment {

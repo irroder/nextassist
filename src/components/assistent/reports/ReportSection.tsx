@@ -24,19 +24,26 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 		useState<ReportFormData>(defaultReportForm);
 
 	const reports = getProjectReports(projectId);
+	const isAssistant = user?.role === "assistant";
 
 	const handleSubmitReport = (e: React.FormEvent) => {
 		e.preventDefault();
 
+		if (!isAssistant) return;
+
 		addReport({
 			projectId,
 			date: reportForm.date,
-			content: reportForm.content,
-			createdBy: user.id,
+			summary: reportForm.content,
+			createdBy: user?.id || "",
+			achievements: [],
+			challenges: [],
+			nextDayPlans: [],
 		});
 
 		setReportForm(defaultReportForm);
 		setShowReportModal(false);
+		setShowReportsModal(true);
 	};
 
 	return (
@@ -44,14 +51,16 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 			<div className="px-6 py-4 flex justify-between items-center">
 				<h2 className="text-base font-medium">Отчеты</h2>
 				<div className="flex gap-2">
+					{isAssistant && (
+						<button
+							className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-black hover:bg-[#e3ec45] h-8 px-3 text-xs font-semibold"
+							onClick={() => setShowReportModal(true)}
+						>
+							Добавить отчет
+						</button>
+					)}
 					<button
 						className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-black hover:bg-[#e3ec45] h-8 px-3 text-xs font-semibold"
-						onClick={() => setShowReportModal(true)}
-					>
-						Добавить отчет
-					</button>
-					<button
-						className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black/10 text-black hover:bg-black/20 h-8 px-3 text-xs font-semibold"
 						onClick={() => setShowReportsModal(true)}
 					>
 						Архив
@@ -60,7 +69,7 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 			</div>
 
 			{/* Add Report Modal */}
-			{showReportModal && (
+			{showReportModal && isAssistant && (
 				<div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
 					<div className="bg-white rounded-lg shadow-xl max-w-md w-full">
 						<div className="px-6 py-4 border-b border-gray-200">
@@ -137,49 +146,53 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 
 			{/* View Reports Modal */}
 			{showReportsModal && (
-				<div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-					<div className="bg-[#fffeec] rounded-xl shadow-xl max-w-2xl w-full">
-						<div className="px-8 py-6 border-b border-[#2c2b2a]/10 flex justify-between items-center">
-							<h3 className="text-xl font-semibold text-[#2c2b2a]">
+				<div className="fixed inset-0 z-50 overflow-auto bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+					<div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+						<div className="px-4 sm:px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+							<h3 className="text-lg sm:text-xl font-semibold text-foreground">
 								История отчетов
 							</h3>
 							<button
-								className="text-[#2c2b2a] hover:opacity-70 transition-opacity"
+								className="text-foreground/70 hover:text-foreground p-1"
 								onClick={() => setShowReportsModal(false)}
 								aria-label="Close"
 							>
 								✕
 							</button>
 						</div>
-						<div className="px-8 py-6">
+						<div className="flex-1 overflow-y-auto p-4 sm:p-6">
 							{reports.length === 0 ? (
 								<div className="text-center py-8">
-									<p className="text-[#2c2b2a]/70 text-lg mb-4">
+									<p className="text-foreground/70 text-base sm:text-lg mb-4">
 										Отчетов пока нет
 									</p>
-									<button
-										className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-[#2c2b2a] hover:bg-[#e3ec45] h-8 px-3 text-xs font-semibold"
-										onClick={() => {
-											setShowReportsModal(false);
-											setShowReportModal(true);
-										}}
-									>
-										+ Создать первый отчет
-									</button>
-								</div>
-							) : (
-								<div className="space-y-6">
-									<div className="flex justify-end">
+									{isAssistant && (
 										<button
-											className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-[#2c2b2a] hover:bg-[#e3ec45] h-8 px-3 text-xs font-semibold"
+											className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-foreground hover:bg-[#edf64d]/90 h-8 px-3 shadow-sm"
 											onClick={() => {
 												setShowReportsModal(false);
 												setShowReportModal(true);
 											}}
 										>
-											+ Добавить отчет
+											+ Создать первый отчет
 										</button>
-									</div>
+									)}
+								</div>
+							) : (
+								<div className="space-y-4 sm:space-y-6">
+									{isAssistant && (
+										<div className="flex justify-end">
+											<button
+												className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-foreground hover:bg-[#edf64d]/90 h-8 px-3 shadow-sm"
+												onClick={() => {
+													setShowReportsModal(false);
+													setShowReportModal(true);
+												}}
+											>
+												+ Добавить отчет
+											</button>
+										</div>
+									)}
 									{reports
 										.sort(
 											(a, b) =>
@@ -189,10 +202,10 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 										.map((report) => (
 											<div
 												key={report.id}
-												className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+												className="bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow"
 											>
-												<div className="flex justify-between items-start mb-2">
-													<div className="font-semibold text-[#2c2b2a] text-lg">
+												<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-2 mb-2">
+													<div className="font-medium text-foreground text-base sm:text-lg">
 														{format(
 															parseISO(
 																report.date
@@ -200,7 +213,7 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 															"d MMMM yyyy"
 														)}
 													</div>
-													<div className="text-sm text-[#2c2b2a]/60">
+													<div className="text-xs sm:text-sm text-foreground/60">
 														{format(
 															parseISO(
 																report.createdAt
@@ -209,9 +222,86 @@ export const ReportSection: React.FC<ReportSectionProps> = ({ projectId }) => {
 														)}
 													</div>
 												</div>
-												<p className="text-[#2c2b2a]/80 whitespace-pre-wrap leading-relaxed">
-													{report.content}
+												<p className="text-foreground/80 text-sm sm:text-base whitespace-pre-wrap leading-relaxed">
+													{report.summary}
 												</p>
+												{report.achievements.length >
+													0 && (
+													<div className="mt-4">
+														<h4 className="text-sm font-medium text-foreground/70 mb-2">
+															Достижения:
+														</h4>
+														<ul className="list-disc list-inside text-foreground/80 text-sm sm:text-base">
+															{report.achievements.map(
+																(
+																	achievement,
+																	index
+																) => (
+																	<li
+																		key={
+																			index
+																		}
+																	>
+																		{
+																			achievement
+																		}
+																	</li>
+																)
+															)}
+														</ul>
+													</div>
+												)}
+												{report.challenges.length >
+													0 && (
+													<div className="mt-4">
+														<h4 className="text-sm font-medium text-foreground/70 mb-2">
+															Сложности:
+														</h4>
+														<ul className="list-disc list-inside text-foreground/80 text-sm sm:text-base">
+															{report.challenges.map(
+																(
+																	challenge,
+																	index
+																) => (
+																	<li
+																		key={
+																			index
+																		}
+																	>
+																		{
+																			challenge
+																		}
+																	</li>
+																)
+															)}
+														</ul>
+													</div>
+												)}
+												{report.nextDayPlans.length >
+													0 && (
+													<div className="mt-4">
+														<h4 className="text-sm font-medium text-foreground/70 mb-2">
+															Планы на следующий
+															день:
+														</h4>
+														<ul className="list-disc list-inside text-foreground/80 text-sm sm:text-base">
+															{report.nextDayPlans.map(
+																(
+																	plan,
+																	index
+																) => (
+																	<li
+																		key={
+																			index
+																		}
+																	>
+																		{plan}
+																	</li>
+																)
+															)}
+														</ul>
+													</div>
+												)}
 											</div>
 										))}
 								</div>

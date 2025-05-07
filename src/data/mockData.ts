@@ -4,7 +4,6 @@ import {
 	Skill,
 	Course,
 	Project,
-	Task,
 	Comment,
 	DailyReport,
 	BalanceInfo,
@@ -21,6 +20,8 @@ export const allUsers: User[] = [
 		createdAt: "2024-01-01T00:00:00.000Z",
 		avatar: "https://i.pravatar.cc/150?img=1",
 		bio: "Full-stack разработчик с более чем 5-летним опытом создания веб-приложений. Увлечен созданием интуитивно понятных пользовательских интерфейсов и решением сложных задач.",
+		inn: "1234567890",
+		hasAcceptedOffer: true,
 	},
 	{
 		id: "2",
@@ -131,14 +132,15 @@ export const courses: Course[] = [
 export const projects: Project[] = [
 	{
 		id: "1",
-		title: "Михаил Петров",
-		description:
-			"Предприниматель в сфере электронной коммерции. Развивает платформу онлайн-продаж с фокусом на пользовательский опыт.",
+		assistantTitle: "Елена Петрова",
+		managerTitle: "Алексей Морозов",
+		assistantDescription:
+			"Я - Елена, менеджер по продажам. Я помогаю компаниям увеличить продажи и привлечь новых клиентов.",
+		managerDescription:
+			"Full-stack разработчик с более чем 5-летним опытом создания веб-приложений. Увлечен созданием интуитивно понятных пользовательских интерфейсов и решением сложных задач.",
 		managerId: "2",
+		assistantId: "1",
 		managerName: "Елена Петрова",
-		status: "active",
-		startDate: "2023-10-01",
-		endDate: null,
 		tasks: [
 			{
 				id: "1",
@@ -150,9 +152,9 @@ export const projects: Project[] = [
 				deadline: "2023-12-15",
 				status: "in_progress",
 				createdBy: "2",
-				assignedTo: "1",
 				createdAt: "2023-10-05",
 				comments: [],
+				completedAt: null,
 			},
 			{
 				id: "2",
@@ -164,9 +166,23 @@ export const projects: Project[] = [
 				deadline: "2023-12-20",
 				status: "new",
 				createdBy: "2",
-				assignedTo: "1",
 				createdAt: "2023-10-10",
 				comments: [],
+				completedAt: null,
+			},
+			{
+				id: "3",
+				projectId: "1",
+				title: "Подключение платежной системы",
+				description:
+					"Подключение платежной системы для оплаты товаров в корзине.",
+				priority: "medium",
+				deadline: "2026-12-20",
+				status: "new",
+				createdBy: "1",
+				createdAt: "2023-10-10",
+				comments: [],
+				completedAt: null,
 			},
 		],
 		reports: [
@@ -187,159 +203,15 @@ export const projects: Project[] = [
 			},
 		],
 	},
-	{
-		id: "2",
-		title: "Александр Соколов",
-		description:
-			"Владелец сети розничных магазинов. Внедряет цифровые решения для оптимизации бизнес-процессов.",
-		managerId: "2",
-		managerName: "Елена Петрова",
-		status: "active",
-		startDate: "2023-11-15",
-		endDate: null,
-		tasks: [
-			{
-				id: "3",
-				projectId: "2",
-				title: "Создание графиков для данных продаж",
-				description:
-					"Реализация интерактивных графиков для отображения ежемесячных и квартальных данных о продажах.",
-				priority: "low",
-				deadline: "2023-12-10",
-				status: "new",
-				createdBy: "2",
-				assignedTo: "1",
-				createdAt: "2023-11-16",
-				comments: [],
-			},
-		],
-		reports: [],
-	},
-	{
-		id: "3",
-		title: "Роман Волков",
-		description:
-			"Основатель стартапа в сфере финтех. Разрабатывает инновационное мобильное приложение для финансовых операций.",
-		managerId: "2",
-		managerName: "Елена Петрова",
-		status: "completed",
-		startDate: "2023-05-01",
-		endDate: "2023-09-30",
-		tasks: [
-			{
-				id: "4",
-				projectId: "3",
-				title: "Интеграция API для аутентификации",
-				description:
-					"Реализация интеграции API для единой аутентификации пользователей между веб и мобильными платформами.",
-				priority: "low",
-				deadline: "2023-07-15",
-				status: "completed",
-				createdBy: "2",
-				assignedTo: "1",
-				createdAt: "2023-06-01",
-				comments: [],
-			},
-			{
-				id: "5",
-				projectId: "3",
-				title: "Синхронизация пользовательских настроек",
-				description:
-					"Обеспечение синхронизации пользовательских настроек и предпочтений между веб и мобильными приложениями.",
-				priority: "low",
-				deadline: "2023-08-10",
-				status: "completed",
-				createdBy: "2",
-				assignedTo: "1",
-				createdAt: "2023-06-15",
-				comments: [],
-			},
-		],
-		reports: [],
-	},
-];
-
-export const tasks: Task[] = [
-	{
-		id: "1",
-		projectId: "1",
-		title: "Дизайн макета страницы продукта",
-		description:
-			"Создание адаптивного макета для страницы деталей продукта в соответствии с новой системой дизайна.",
-		priority: "high",
-		deadline: "2023-12-15",
-		status: "in_progress",
-		createdBy: "10",
-		assignedTo: "1",
-		createdAt: "2023-10-05",
-		comments: [],
-	},
-	{
-		id: "2",
-		projectId: "1",
-		title: "Реализация функционала корзины",
-		description:
-			"Добавление функционала корзины с возможностью добавления/удаления товаров и обновления количества.",
-		priority: "medium",
-		deadline: "2023-12-20",
-		status: "new",
-		createdBy: "10",
-		assignedTo: "1",
-		createdAt: "2023-10-10",
-		comments: [],
-	},
-	{
-		id: "3",
-		projectId: "2",
-		title: "Создание графиков для данных продаж",
-		description:
-			"Реализация интерактивных графиков для отображения ежемесячных и квартальных данных о продажах.",
-		priority: "low",
-		deadline: "2023-12-10",
-		status: "new",
-		createdBy: "11",
-		assignedTo: "1",
-		createdAt: "2023-11-16",
-		comments: [],
-	},
-	{
-		id: "4",
-		projectId: "3",
-		title: "Интеграция API для аутентификации",
-		description:
-			"Реализация интеграции API для единой аутентификации пользователей между веб и мобильными платформами.",
-		priority: "low",
-		deadline: "2023-07-15",
-		status: "completed",
-		createdBy: "10",
-		assignedTo: "1",
-		createdAt: "2023-06-01",
-		comments: [],
-	},
-	{
-		id: "5",
-		projectId: "3",
-		title: "Синхронизация пользовательских настроек",
-		description:
-			"Обеспечение синхронизации пользовательских настроек и предпочтений между веб и мобильными приложениями.",
-		priority: "low",
-		deadline: "2023-08-10",
-		status: "completed",
-		createdBy: "10",
-		assignedTo: "1",
-		createdAt: "2023-06-15",
-		comments: [],
-	},
 ];
 
 export const comments: Comment[] = [
 	{
 		id: "1",
 		taskId: "1",
-		userId: "4",
-		userName: "Анна Смирнова",
-		userPhoto:
-			"https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600",
+		userId: "2",
+		userName: "Елена Петрова",
+		userPhoto: "https://i.pravatar.cc/150?img=1",
 		content:
 			"Пожалуйста, убедитесь, что макет точно соответствует дизайну в Figma. Особое внимание уделите отступам вокруг изображений продуктов.",
 		createdAt: "2023-10-06T09:30:00Z",
@@ -349,22 +221,10 @@ export const comments: Comment[] = [
 		taskId: "1",
 		userId: "1",
 		userName: "Алексей Морозов",
-		userPhoto:
-			"https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600",
+		userPhoto: "https://i.pravatar.cc/150?img=2",
 		content:
 			"Я начал реализацию и у меня возник вопрос о поведении адаптивности на планшетах. Нужно ли располагать изображения в столбец или оставить в виде сетки?",
 		createdAt: "2023-10-07T14:20:00Z",
-	},
-	{
-		id: "3",
-		taskId: "3",
-		userId: "5",
-		userName: "Дмитрий Козлов",
-		userPhoto:
-			"https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=600",
-		content:
-			"Маркетинговая команда запросила дополнительные фильтры для графиков. Я отправлю обновленные требования завтра.",
-		createdAt: "2023-11-18T11:45:00Z",
 	},
 ];
 
@@ -391,6 +251,17 @@ export const reports: DailyReport[] = [
 		challenges: ["Необходимость переработки существующих компонентов"],
 		nextDayPlans: ["Начать реализацию обновленного дизайна"],
 		createdAt: "2024-03-14T16:45:00Z",
+		createdBy: "1",
+	},
+	{
+		id: "3",
+		projectId: "1",
+		date: "2024-03-13",
+		summary: "Проведены тесты и отладка модуля оплаты",
+		achievements: ["Проведены тесты и отладка модуля оплаты"],
+		challenges: ["Сложности с интеграцией платежной системы"],
+		nextDayPlans: ["Начать работу над модулем доставки"],
+		createdAt: "2024-03-13T12:30:00Z",
 		createdBy: "1",
 	},
 ];

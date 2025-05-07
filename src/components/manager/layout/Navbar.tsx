@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Settings, LogOut } from "lucide-react";
+import { Menu, X, LogOut, CircleUser } from "lucide-react";
 import { useApp } from "../../../context/AppContext";
 
 export const Navbar: React.FC = () => {
@@ -73,7 +73,6 @@ export const Navbar: React.FC = () => {
 							<NavLink to="/manager/dashboard">
 								Ассистенты
 							</NavLink>
-							<NavLink to="/manager/profile">Профиль</NavLink>
 							<NavLink to="/manager/courses">Курсы</NavLink>
 							<NavLink to="/manager/balance">Баланс</NavLink>
 						</div>
@@ -109,14 +108,17 @@ export const Navbar: React.FC = () => {
 									role="menu"
 								>
 									<Link
-										to="/manager/settings"
+										to="/manager/profile"
 										className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 										onClick={() =>
 											setProfileMenuOpen(false)
 										}
 									>
-										<Settings size={16} className="mr-2" />
-										Настройки
+										<CircleUser
+											size={16}
+											className="mr-2"
+										/>
+										Профиль
 									</Link>
 									<button
 										className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -212,17 +214,6 @@ export const Navbar: React.FC = () => {
 									Ассистенты
 								</Link>
 								<Link
-									to="/manager/profile"
-									className={`flex items-center px-6 py-4 text-base font-medium transition-colors ${
-										location.pathname === "/manager/profile"
-											? "bg-primary text-primary-foreground"
-											: "text-foreground hover:bg-accent"
-									}`}
-									onClick={() => setMobileMenuOpen(false)}
-								>
-									Профиль
-								</Link>
-								<Link
 									to="/manager/courses"
 									className={`flex items-center px-6 py-4 text-base font-medium transition-colors ${
 										location.pathname ===
@@ -250,15 +241,15 @@ export const Navbar: React.FC = () => {
 							{/* Footer */}
 							<div className="border-t border-gray-100 p-6 space-y-3">
 								<Link
-									to="/manager/settings"
+									to="/manager/profile"
 									className="flex items-center px-6 py-4 text-base font-medium text-foreground hover:bg-accent rounded-xl transition-colors"
 									onClick={() => setMobileMenuOpen(false)}
 								>
-									<Settings
+									<CircleUser
 										size={20}
 										className="mr-3 text-muted-foreground"
 									/>
-									Настройки
+									Профиль
 								</Link>
 								<button
 									className="flex w-full items-center px-6 py-4 text-base font-medium text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
