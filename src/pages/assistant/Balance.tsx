@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, TrendingUp, Receipt, X } from "lucide-react";
+import { TrendingUp, Receipt, X, Wallet } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { ru } from "date-fns/locale";
 
@@ -14,10 +14,6 @@ const Balance: React.FC = () => {
 		currentMonth: {
 			earnings: 45000,
 			projectCount: 3,
-		},
-		nextPayment: {
-			amount: 50000,
-			date: "2024-03-25",
 		},
 		recentPayments: [
 			{
@@ -74,55 +70,50 @@ const Balance: React.FC = () => {
 
 	return (
 		<>
-			<div className="mb-8">
-				<h1 className="text-2xl font-bold text-gray-900 mb-2">
+			<div className="mb-6 sm:mb-8">
+				<h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2">
 					Баланс
 				</h1>
-				<p className="text-gray-600">
+				<p className="text-sm sm:text-base text-foreground/70">
 					Управление доходами и история выплат
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-				{/* Current Month Earnings */}
-				<div className="bg-white rounded-lg shadow-md overflow-hidden">
-					<div className="p-6">
-						<div className="mb-4">
-							<TrendingUp className="text-[#4A6EE0]" size={32} />
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+				{/* Total Balance */}
+				<div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-5">
+					<div className="flex items-start gap-4">
+						<div className="flex-shrink-0 p-3 bg-[#edf64d]/10 rounded-lg">
+							<Wallet className="text-[#edf64d] w-7 h-7" />
 						</div>
-						<div className="space-y-1">
-							<p className="text-[#4A6EE0]/70 text-sm">
-								Заработок за месяц
+						<div className="min-w-0">
+							<p className="text-sm text-foreground/70">
+								Общий баланс
 							</p>
-							<p className="text-[32px] font-medium text-black">
-								{formatCurrency(
-									balanceData.currentMonth.earnings
-								)}
+							<p className="text-2xl font-medium text-foreground truncate">
+								{formatCurrency(balanceData.totalBalance)}
 							</p>
 						</div>
 					</div>
 				</div>
 
-				{/* Next Payment */}
-				<div className="bg-white rounded-lg shadow-md overflow-hidden">
-					<div className="p-6">
-						<div className="flex items-center justify-between mb-4">
-							<div className="p-2 bg-green-50 rounded-xl">
-								<Calendar
-									className="text-green-500"
-									size={24}
-								/>
-							</div>
+				{/* Current Month Earnings */}
+				<div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-5">
+					<div className="flex items-start gap-4">
+						<div className="flex-shrink-0 p-3 bg-[#bcb4ff]/10 rounded-lg">
+							<TrendingUp className="text-[#bcb4ff] w-7 h-7" />
 						</div>
-						<div className="space-y-1">
-							<p className="text-gray-500 text-sm">
-								Следующая выплата
+						<div className="min-w-0">
+							<p className="text-sm text-foreground/70">
+								Активных проектов на сумму
 							</p>
-							<p className="text-2xl font-bold text-gray-900">
-								{formatCurrency(balanceData.nextPayment.amount)}
+							<p className="text-2xl font-medium text-foreground truncate">
+								{formatCurrency(
+									balanceData.currentMonth.earnings
+								)}
 							</p>
-							<p className="text-sm text-gray-500">
-								{formatDate(balanceData.nextPayment.date)}
+							<p className="text-xs text-foreground/60">
+								{balanceData.currentMonth.projectCount} проекта
 							</p>
 						</div>
 					</div>
@@ -130,47 +121,45 @@ const Balance: React.FC = () => {
 			</div>
 
 			{/* Payment History */}
-			<div className="bg-white rounded-lg shadow-md overflow-hidden">
-				<div className="px-6 py-4 border-b border-gray-200">
-					<h2 className="text-xl font-semibold text-gray-800">
+			<div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+				<div className="px-4 sm:px-6 py-4 border-b border-gray-100">
+					<h2 className="text-lg sm:text-xl font-semibold text-foreground">
 						История выплат
 					</h2>
 				</div>
-				<div className="px-6 py-4">
-					<div className="divide-y divide-gray-200">
-						{balanceData.recentPayments.map((payment) => (
-							<div
-								key={payment.id}
-								className="py-4 first:pt-0 last:pb-0"
-							>
-								<div className="flex items-center justify-between">
-									<div>
-										<h3 className="font-medium text-gray-900">
-											{payment.projectName}
-										</h3>
-										<p className="text-sm text-gray-500">
-											Руководитель: {payment.managerName}
-										</p>
-									</div>
+				<div className="divide-y divide-gray-100">
+					{balanceData.recentPayments.map((payment) => (
+						<div
+							key={payment.id}
+							className="p-4 sm:p-6 hover:bg-gray-50/50 transition-colors"
+						>
+							<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+								<div className="space-y-1">
+									<h3 className="font-medium text-foreground">
+										{payment.projectName}
+									</h3>
+									<p className="text-sm text-foreground/60">
+										Руководитель: {payment.managerName}
+									</p>
+									<p className="text-xs text-foreground/50">
+										ID: {payment.projectId}
+									</p>
+								</div>
+								<div className="flex items-center justify-between sm:justify-end gap-4">
 									<div className="text-right">
-										<p className="font-medium text-gray-900">
+										<p className="font-medium text-foreground">
 											{formatCurrency(payment.amount)}
 										</p>
-										<p className="text-sm text-gray-500">
+										<p className="text-sm text-foreground/60">
 											{formatDate(payment.date)}
 										</p>
 									</div>
-								</div>
-								<div className="mt-2 flex items-center justify-between">
-									<p className="text-sm text-gray-500">
-										ID: {payment.projectId}
-									</p>
 									<div className="flex items-center gap-2">
-										<span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
+										<span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700">
 											Выплачено
 										</span>
 										<button
-											className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+											className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-white shadow-sm hover:bg-[#faf6f1] h-8 w-8 p-0"
 											onClick={() =>
 												handleOpenReceipt(payment)
 											}
@@ -180,82 +169,84 @@ const Balance: React.FC = () => {
 									</div>
 								</div>
 							</div>
-						))}
-					</div>
+						</div>
+					))}
 				</div>
 			</div>
 
 			{/* Receipt Modal */}
 			{selectedPayment && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-					<div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-						<div className="flex items-center justify-between p-6 border-b border-gray-200">
-							<h3 className="text-lg font-semibold text-gray-900">
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+					<div className="bg-white rounded-xl shadow-xl max-w-md w-full">
+						<div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
+							<h3 className="text-lg font-semibold text-foreground">
 								Чек об оплате
 							</h3>
 							<button
 								onClick={handleCloseReceipt}
-								className="text-gray-400 hover:text-gray-600 transition-colors"
+								className="text-foreground/60 hover:text-foreground transition-colors p-1"
 							>
 								<X size={20} />
 							</button>
 						</div>
-						<div className="p-6 space-y-4">
+						<div className="p-4 sm:p-6 space-y-4">
 							<div className="text-center mb-6">
-								<h4 className="text-xl font-bold text-gray-900 mb-1">
-									БезРук
+								<h4 className="text-xl font-bold text-foreground mb-1">
+									NextAssist
 								</h4>
-								<p className="text-sm text-gray-500">
-									Платформа для фрилансеров
+								<p className="text-sm text-foreground/60">
+									Платформа для управления проектами
 								</p>
 							</div>
 
 							<div className="space-y-3">
 								<div className="flex justify-between">
-									<span className="text-gray-600">
+									<span className="text-foreground/70">
 										Номер чека:
 									</span>
-									<span className="font-medium">
+									<span className="font-medium text-foreground">
 										{selectedPayment.id}
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-600">Дата:</span>
-									<span className="font-medium">
+									<span className="text-foreground/70">
+										Дата:
+									</span>
+									<span className="font-medium text-foreground">
 										{formatDate(selectedPayment.date)}
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-600">
+									<span className="text-foreground/70">
 										Проект:
 									</span>
-									<span className="font-medium">
+									<span className="font-medium text-foreground">
 										{selectedPayment.projectName}
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-600">
+									<span className="text-foreground/70">
 										ID проекта:
 									</span>
-									<span className="font-medium">
+									<span className="font-medium text-foreground">
 										{selectedPayment.projectId}
 									</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-600">
+									<span className="text-foreground/70">
 										Руководитель:
 									</span>
-									<span className="font-medium">
+									<span className="font-medium text-foreground">
 										{selectedPayment.managerName}
 									</span>
 								</div>
 
-								<div className="border-t border-gray-200 pt-3 mt-3">
+								<div className="border-t border-gray-100 pt-3 mt-3">
 									<div className="flex justify-between items-center">
-										<span className="text-gray-900 font-semibold">
+										<span className="text-foreground font-semibold">
 											Сумма:
 										</span>
-										<span className="text-xl font-bold text-gray-900">
+										<span className="text-xl font-bold text-foreground">
 											{formatCurrency(
 												selectedPayment.amount
 											)}
@@ -264,9 +255,9 @@ const Balance: React.FC = () => {
 								</div>
 							</div>
 
-							<div className="mt-6 pt-6 border-t border-gray-200">
+							<div className="mt-6 pt-6 border-t border-gray-100">
 								<button
-									className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+									className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#edf64d] text-foreground hover:bg-[#edf64d]/90 h-9 px-4 py-2 shadow-sm"
 									onClick={() => {
 										// Here you would implement the actual download/print functionality
 										alert("Скачивание чека...");
